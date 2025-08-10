@@ -1,0 +1,105 @@
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 400px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.blur-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300px;
+  backdrop-filter: blur(10px);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Camada extra só com o degradê visual */
+.blur-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0));
+  z-index: 3;
+  pointer-events: none;
+}
+h1 {
+  margin-bottom: 30px;
+}
+
+h1 {
+  margin-bottom: 30px;
+}
+
+.emoji-gif {
+  height: 1em;
+  vertical-align: middle;
+}
+
+h1 .emoji-gif,
+a .emoji-gif,
+h2 .emoji-gif {
+  height: 1.5em; /* ou maior se quiser */
+}
+
+.buttons .btn {
+  display: block;
+  background-color: #222;
+  color: #fff;
+  padding: 15px;
+  margin: 10px 0;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: background-color 0.3s;
+}
+
+.buttons .btn:hover {
+  background-color: #444;
+}
+.link-button {
+  display: block;
+  width: 80%;
+  padding: 15px;
+  margin: 10px auto;
+  background-color: #1e1e1e;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  transform: scale(1);
+}
+
+.link-button:hover,
+.link-button:active {
+  background-color: #333333;
+  transform: scale(0.95); /* Diminui um pouco */
+}
