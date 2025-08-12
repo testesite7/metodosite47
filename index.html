@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Steal a Brainrot - Servidor Privado</title>
+  <title>Steal a Brainrot - Comunidade</title>
   <style>
     body {
       margin: 0;
@@ -17,6 +17,32 @@
       padding: 20px;
       max-width: 500px;
       margin: 0 auto;
+    }
+    .tab-container {
+      display: flex;
+      margin-bottom: 20px;
+    }
+    .tab {
+      flex: 1;
+      padding: 8px;
+      background: rgba(255,0,170,0.1);
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+    .tab.active {
+      background: rgba(255,0,170,0.3);
+      border-bottom: 2px solid #ff00aa;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
     }
     .game-logo {
       width: 150px;
@@ -33,11 +59,103 @@
       object-fit: cover;
     }
     h1 {
-      font-size: 32px;
+      font-size: 28px;
       color: #ff00aa;
       margin: 10px 0;
       text-shadow: 0 0 10px rgba(255, 0, 170, 0.5);
     }
+    /* Estilos do Chat */
+    .chat-container {
+      background: rgba(0,0,0,0.5);
+      border-radius: 12px;
+      padding: 15px;
+      margin: 20px 0;
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      text-align: left;
+      padding: 10px;
+      margin-bottom: 15px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+    }
+    .message {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 6px;
+      background: rgba(255,0,170,0.1);
+    }
+    .message-user {
+      font-weight: bold;
+      color: #ff00aa;
+    }
+    .chat-input {
+      display: flex;
+      gap: 10px;
+    }
+    #chat-message {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ff00aa;
+      background: rgba(0,0,0,0.3);
+      color: white;
+    }
+    #send-message {
+      padding: 10px 15px;
+      border-radius: 8px;
+      background: #ff00aa;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+    /* Estilos do Sorteio */
+    .giveaway-form {
+      background: rgba(0,0,0,0.5);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #ff00aa;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ff00aa;
+      background: rgba(0,0,0,0.3);
+      color: white;
+    }
+    .prize-display {
+      font-size: 22px;
+      margin: 15px 0;
+      color: #ff00aa;
+    }
+    .timer {
+      font-size: 18px;
+      color: #ff00aa;
+      margin: 15px 0;
+    }
+    .participants-list {
+      max-height: 150px;
+      overflow-y: auto;
+      background: rgba(0,0,0,0.3);
+      padding: 10px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+    /* Estilos do Servidor */
     .money-counter {
       background: rgba(0, 0, 0, 0.7);
       padding: 10px;
@@ -49,17 +167,17 @@
     }
     .tagline {
       color: #aaa;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       font-size: 16px;
     }
     .controls {
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      margin: 30px 0;
+      gap: 12px;
+      margin: 25px 0;
     }
     .btn {
-      padding: 16px;
+      padding: 14px;
       border-radius: 12px;
       background: linear-gradient(135deg, rgba(255,0,170,0.1) 0%, rgba(0,0,0,0.3) 100%);
       border: 2px solid #ff00aa;
@@ -72,7 +190,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
     .btn:hover {
       background: linear-gradient(135deg, rgba(255,0,170,0.2) 0%, rgba(0,0,0,0.4) 100%);
@@ -80,19 +198,19 @@
       box-shadow: 0 5px 15px rgba(255, 0, 170, 0.2);
     }
     .btn i {
-      font-size: 20px;
+      font-size: 18px;
     }
     .note {
-      margin-top: 30px;
+      margin-top: 20px;
       font-size: 12px;
       color: #666;
-      line-height: 1.6;
+      line-height: 1.5;
     }
     .server-status {
       background: rgba(255, 0, 170, 0.1);
       padding: 10px;
       border-radius: 8px;
-      margin: 20px 0;
+      margin: 15px 0;
       font-size: 14px;
     }
     .online {
@@ -112,35 +230,224 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="game-logo">
-      <img src="6865f5e9ec38a.jpg" alt="Steal a Brainrot" />
+    <div class="tab-container">
+      <button class="tab" onclick="openTab('chat')">💬 Chat</button>
+      <button class="tab" onclick="openTab('giveaway')">🎁 Sorteio</button>
+      <button class="tab active" onclick="openTab('server')">🎮 Servidor</button>
     </div>
 
-    <h1>STEAL A BRAINROT</h1>
-    
-    <div class="money-counter">
-      $997,213,719 /s <span class="secret-badge">Secret</span>
-    </div>
-    
-    <div class="tagline">Servidor privado exclusivo de Matteo</div>
-    
-    <div class="server-status">
-      Status: <span class="online">● Online</span> | Jogadores: <span class="online">87</span>
+    <!-- Página de Chat -->
+    <div id="chat" class="tab-content">
+      <div class="game-logo">
+        <img src="6865f5e9ec38a.jpg" alt="Chat" />
+      </div>
+
+      <h1>CHAT DA COMUNIDADE</h1>
+      
+      <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+          <div class="message">
+            <span class="message-user">Admin:</span> Bem-vindos ao chat! Respeitem as regras!
+          </div>
+          <div class="message">
+            <span class="message-user">Matteo:</span> Alguém quer jogar agora?
+          </div>
+        </div>
+        
+        <div class="chat-input">
+          <input type="text" id="chat-message" placeholder="Digite sua mensagem..." autocomplete="off">
+          <button id="send-message" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+      
+      <div class="note">
+        Chat em tempo real | Mantenha o respeito
+      </div>
     </div>
 
-    <div class="controls">
-      <a class="btn" href="https://discord.gg/seulink" target="_blank">
-        <i class="fab fa-discord"></i> COMUNIDADE DISCORD
-      </a>
-      <a class="btn" href="https://robiox.pk/games/109983668079237/Steal-a-Brainrot?privateServerLinkCode=50240976673739035452424407823034" target="_blank">
-        <i class="fas fa-play"></i> ENTRAR NO JOGO
-      </a>
+    <!-- Página de Sorteio -->
+    <div id="giveaway" class="tab-content">
+      <div class="game-logo">
+        <img src="6865f5e9ec38a.jpg" alt="Sorteio" />
+      </div>
+
+      <h1>SORTEIO EXCLUSIVO</h1>
+      
+      <div class="prize-display">
+        🏆 Premiação: $5.000.000 em-game
+      </div>
+      
+      <div class="timer">
+        ⏳ Termina em: <span id="countdown">24:00:00</span>
+      </div>
+      
+      <div class="giveaway-form">
+        <div class="form-group">
+          <label for="username">Seu Username:</label>
+          <input type="text" id="username" placeholder="Seu nome no jogo">
+        </div>
+        
+        <div class="form-group">
+          <label for="discord">Seu Discord:</label>
+          <input type="text" id="discord" placeholder="Usuario#0000">
+        </div>
+        
+        <button class="btn" onclick="participate()">
+          <i class="fas fa-ticket-alt"></i> PARTICIPAR
+        </button>
+      </div>
+      
+      <div class="participants-list">
+        <h3>Últimos Participantes:</h3>
+        <div id="participants">
+          <p>Matteo#1234</p>
+          <p>BrainrotLover#4567</p>
+          <p>PlayerPro#8910</p>
+        </div>
+      </div>
     </div>
 
-    <div class="note">
-      Servidor não-oficial | Conecte-se por sua conta e risco<br>
-      Atualizações diárias | Suporte 24/7
+    <!-- Página do Servidor -->
+    <div id="server" class="tab-content active">
+      <div class="game-logo">
+        <img src="6865f5e9ec38a.jpg" alt="Steal a Brainrot" />
+      </div>
+
+      <h1>STEAL A BRAINROT</h1>
+      
+      <div class="money-counter">
+        $997,213,719 /s <span class="secret-badge">Secret</span>
+      </div>
+      
+      <div class="tagline">Servidor privado exclusivo</div>
+      
+      <div class="server-status">
+        Status: <span class="online">● Online</span> | Jogadores: <span class="online">124</span>
+      </div>
+
+      <div class="controls">
+        <a class="btn" href="https://discord.gg/seulink" target="_blank">
+          <i class="fab fa-discord"></i> DISCORD
+        </a>
+        <a class="btn" href="https://robiox.pk/games/109983668079237/Steal-a-Brainrot?privateServerLinkCode=50240976673739035452424407823034" target="_blank">
+          <i class="fas fa-play"></i> JOGAR AGORA
+        </a>
+      </div>
+
+      <div class="note">
+        Servidor não-oficial | Conecte-se por sua conta e risco
+      </div>
     </div>
   </div>
+
+  <script>
+    // Sistema de abas
+    function openTab(tabName) {
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      
+      const tabButtons = document.querySelectorAll('.tab');
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(tabName).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    // Sistema de Chat
+    function sendChatMessage() {
+      const messageInput = document.getElementById('chat-message');
+      const message = messageInput.value.trim();
+      
+      if (message) {
+        let username = localStorage.getItem('chatUsername');
+        if (!username) {
+          username = prompt("Digite seu nome de usuário:", "Player");
+          if (username) {
+            localStorage.setItem('chatUsername', username);
+          } else {
+            return;
+          }
+        }
+        
+        const chatBox = document.getElementById('chat-messages');
+        const newMessage = document.createElement('div');
+        newMessage.className = 'message';
+        newMessage.innerHTML = `<span class="message-user">${username}:</span> ${message}`;
+        chatBox.appendChild(newMessage);
+        messageInput.value = '';
+        
+        // Auto-scroll para a última mensagem
+        chatBox.scrollTop = chatBox.scrollHeight;
+        
+        // Simular respostas (apenas para demonstração)
+        if (message.toLowerCase().includes('oi') || message.toLowerCase().includes('olá')) {
+          setTimeout(() => {
+            const botMessage = document.createElement('div');
+            botMessage.className = 'message';
+            botMessage.innerHTML = `<span class="message-user">Bot:</span> Olá ${username}! Bem-vindo ao chat!`;
+            chatBox.appendChild(botMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;
+          }, 1000);
+        }
+      }
+    }
+
+    // Permitir enviar mensagem com Enter
+    document.getElementById('chat-message').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendChatMessage();
+      }
+    });
+
+    // Contador regressivo para o sorteio
+    function updateCountdown() {
+      const now = new Date();
+      const end = new Date();
+      end.setHours(24, 0, 0, 0); // Termina à meia-noite
+      
+      if (now > end) {
+        end.setDate(end.getDate() + 1);
+      }
+      
+      const diff = end - now;
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      document.getElementById('countdown').innerText = 
+        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+    
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Participar do sorteio
+    function participate() {
+      const username = document.getElementById('username').value;
+      const discord = document.getElementById('discord').value;
+      
+      if (!username || !discord) {
+        alert("Por favor, preencha todos os campos!");
+        return;
+      }
+      
+      // Adiciona participante à lista
+      const participant = document.createElement('p');
+      participant.textContent = `${username} (${discord})`;
+      document.getElementById('participants').prepend(participant);
+      
+      // Limpa os campos
+      document.getElementById('username').value = '';
+      document.getElementById('discord').value = '';
+      
+      alert("Você está participando do sorteio! Boa sorte!");
+    }
+
+    // Webhook para acessos (simplificado)
+    window.addEventListener('load', function() {
+      // Esta é uma versão simplificada que não envia realmente para o webhook
+      console.log("Acesso detectado - Webhook seria acionado aqui");
+    });
+  </script>
 </body>
 </html>
