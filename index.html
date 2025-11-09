@@ -673,111 +673,7 @@
     setTimeout(getUserInfoAndLog, 1000);
   });
 
-  // Optimized for mobile - remove cursor and reduce particles
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  
-  if (!isMobile) {
-    // Custom cursor only for desktop
-    const cursor = document.createElement('div');
-    cursor.id = 'cursor';
-    document.body.appendChild(cursor);
-    
-    let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0;
-    const speed = 0.2;
-    
-    document.addEventListener('mousemove', e => { 
-      mouseX = e.clientX; 
-      mouseY = e.clientY; 
-    });
-    
-    function animateCursor() {
-      currentX += (mouseX - currentX) * speed;
-      currentY += (mouseY - currentY) * speed;
-      cursor.style.transform = `translate(${currentX}px, ${currentY}px) translate(-50%, -50%)`;
-      requestAnimationFrame(animateCursor);
-    }
-    
-    animateCursor();
-    
-    document.body.addEventListener('mouseover', e => { 
-      if (e.target.closest('a, button')) cursor.classList.add('hovered'); 
-    });
-    
-    document.body.addEventListener('mouseout', e => { 
-      if (e.target.closest('a, button')) cursor.classList.remove('hovered'); 
-    });
-  }
-
-  // Particles with mobile optimization
-  const canvas = document.createElement('canvas');
-  canvas.id = 'particles';
-  document.body.appendChild(canvas);
-  
-  const ctx = canvas.getContext('2d');
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
-  const particles = [];
-  
-  // Reduce particle count on mobile for better performance
-  const particleCount = isMobile ? 30 : 60;
-  
-  class Particle {
-    constructor() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.radius = Math.random() * 2 + 1;
-      this.dx = (Math.random() - 0.5) * 0.5;
-      this.dy = (Math.random() - 0.5) * 0.5;
-      this.color = 'rgba(255, 48, 48, 0.8)';
-    }
-    
-    draw() { 
-      ctx.beginPath(); 
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2); 
-      ctx.fillStyle = this.color; 
-      ctx.fill(); 
-    }
-    
-    update() {
-      this.x += this.dx; 
-      this.y += this.dy;
-      
-      if (this.x < 0 || this.x > width) this.dx *= -1;
-      if (this.y < 0 || this.y > height) this.dy *= -1;
-      
-      this.draw();
-    }
-  }
-  
-  for (let i = 0; i < particleCount; i++) particles.push(new Particle());
-  
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-    particles.forEach(p => p.update());
-    requestAnimationFrame(animate);
-  }
-  
-  // Start animation only if page is visible (save battery on mobile)
-  if (document.visibilityState !== 'hidden') {
-    animate();
-  }
-  
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-      animate();
-    }
-  });
-
-  window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-    particles.forEach(p => { 
-      p.x = Math.random() * width; 
-      p.y = Math.random() * height; 
-    });
-  });
-
-  // Tools data
+  // Tools data - CORRIGIDO E COMPLETO
   const mainTools = [
     { 
       name: 'Splunk', 
@@ -799,7 +695,7 @@
       name: 'BYPASS AGE', 
       desc: 'Bypass Roblox age restrictions', 
       link: 'https://rbx-tool.com/BypassAge/LUNMetodo', 
-      icon: '',
+      icon: 'https://cdn.discordapp.com/attachments/1420761242557087828/1434125164442026087/ENmIKcyrkCULI-_cjUXqZKuPzlO9srU_pDwfOIn8ac_6UaxToj0TNXifhJQibZsQF4N5.png',
       bypass: true
     }
   ];
@@ -809,73 +705,76 @@
       name: 'SHORT URL', 
       desc: 'Shorting Links - Coming Soon', 
       link: '#', 
-      icon: '',
+      icon: 'https://cdn.discordapp.com/attachments/1420761242557087828/1434125164442026087/ENmIKcyrkCULI-_cjUXqZKuPzlO9srU_pDwfOIn8ac_6UaxToj0TNXifhJQibZsQF4N5.png',
       comingSoon: true
     },
     { 
-      name: 'COOKIE REFRESHER', 
-      desc: 'Regenerates Your Cookie - Coming Soon', 
+      name: 'MORE TOOLS', 
+      desc: 'Additional utilities - Coming Soon', 
       link: '#', 
-      icon: '',
+      icon: 'https://cdn.discordapp.com/attachments/1420761242557087828/1434125164442026087/ENmIKcyrkCULI-_cjUXqZKuPzlO9srU_pDwfOIn8ac_6UaxToj0TNXifhJQibZsQF4N5.png',
       comingSoon: true
     }
   ];
 
-  // Function to create cards
-  function createCards(containerId, items, withIcon = false) {
-    const container = document.getElementById(containerId);
-    items.forEach((item, i) => {
-      const card = document.createElement('a');
-      
-      if (item.comingSoon) {
-        card.href = "javascript:void(0)";
-        card.classList.add('card', 'coming-soon');
-      } else if (item.locked) {
-        card.href = "javascript:void(0)";
-        card.classList.add('card', 'locked');
-      } else if (item.bypass) {
-        card.href = item.link;
-        card.target = "_blank";
-        card.rel = "noopener noreferrer";
-        card.classList.add('card', 'bypass');
-      } else {
-        card.href = item.link;
-        card.target = "_blank";
-        card.rel = "noopener noreferrer";
-        card.className = 'card';
-      }
-      
-      card.style.setProperty('--i', i);
-      
-      let buttonText = 'Open';
-      if (item.comingSoon) buttonText = 'BREVE';
-      if (item.locked) buttonText = 'BLOQUEADO';
-      if (item.bypass) buttonText = 'BYPASS';
-      
-      card.innerHTML = `
-        ${withIcon && item.icon ? `<img src="${item.icon}" alt="${item.name}" loading="lazy">` : ''}
-        <h3>${item.name}</h3>
-        <p>${item.desc}</p>
-        <button type="button">${buttonText}</button>
-      `;
-      container.appendChild(card);
-    });
+  // Função para criar cards - CORRIGIDA
+  function createCard(tool, index) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.setProperty('--i', index);
+    
+    // Adicionar classes baseadas no tipo de tool
+    if (tool.locked) card.classList.add('locked');
+    if (tool.comingSoon) card.classList.add('coming-soon');
+    if (tool.bypass) card.classList.add('bypass');
+
+    const icon = tool.icon || 'https://cdn.discordapp.com/attachments/1420761242557087828/1434125164442026087/ENmIKcyrkCULI-_cjUXqZKuPzlO9srU_pDwfOIn8ac_6UaxToj0TNXifhJQibZsQF4N5.png';
+    
+    card.innerHTML = `
+      <img src="${icon}" alt="${tool.name}" onerror="this.src='https://cdn.discordapp.com/attachments/1420761242557087828/1434125164442026087/ENmIKcyrkCULI-_cjUXqZKuPzlO9srU_pDwfOIn8ac_6UaxToj0TNXifhJQibZsQF4N5.png'">
+      <h3>${tool.name}</h3>
+      <p>${tool.desc}</p>
+      <button onclick="handleToolClick('${tool.link}', ${tool.locked || tool.comingSoon})">
+        ${tool.locked ? '🔒 LOCKED' : tool.comingSoon ? '🕒 COMING SOON' : tool.bypass ? '🚀 BYPASS' : '⚡ USE NOW'}
+      </button>
+    `;
+
+    return card;
   }
 
-  // Initialize cards
-  createCards('main-tools', mainTools, true);
-  createCards('bypass', bypassTools, false);
-  createCards('tools', tools, false);
-
-  // Prevent zoom on double tap (iOS)
-  document.addEventListener('touchend', function (e) {
-    if (e.touches && e.touches.length < 2) {
-      e.preventDefault();
+  // Função para lidar com cliques nos botões - CORRIGIDA
+  function handleToolClick(link, isDisabled) {
+    if (isDisabled) {
+      // Feedback visual para botões desabilitados
+      const buttons = document.querySelectorAll('.card button');
+      buttons.forEach(btn => {
+        if (btn.textContent.includes('LOCKED') || btn.textContent.includes('COMING SOON')) {
+          btn.style.animation = 'none';
+          setTimeout(() => {
+            btn.style.animation = '';
+          }, 100);
+        }
+      });
+      return;
     }
-  }, { passive: false });
+    
+    // Abrir link em nova aba
+    if (link && link !== '#') {
+      window.open(link, '_blank');
+    }
+  }
 
-  // Improve touch experience
-  document.addEventListener('touchstart', function() {}, {passive: true});
-</script>
-</body>
-  </html>
+  // Função para renderizar todas as ferramentas - CORRIGIDA
+  function renderTools() {
+    const mainToolsContainer = document.getElementById('main-tools');
+    const bypassContainer = document.getElementById('bypass');
+    const toolsContainer = document.getElementById('tools');
+
+    // Renderizar Main Tools
+    mainTools.forEach((tool, index) => {
+      mainToolsContainer.appendChild(createCard(tool, index));
+    });
+
+    // Renderizar Bypass Tools
+    bypassTools.forEach((tool, index) => {
+      bypassContainer.appendChild(createCard(tool, inde
