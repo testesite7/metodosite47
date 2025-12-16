@@ -1,672 +1,527 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineApp - Descubra Filmes Incríveis</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Minha Bio | Discord</title>
     <style>
-        /* Reset e estilos gerais */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #0c0c1d 0%, #1a1a2e 50%, #16213e 100%);
-            color: #ffffff;
-            line-height: 1.6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
-        }
-        
-        /* Header */
-        header {
-            background: rgba(10, 10, 25, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem 2rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(233, 69, 96, 0.3);
-        }
-        
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-        }
-        
-        .logo {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #e94560, #ff7b9c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            text-shadow: 0 2px 10px rgba(233, 69, 96, 0.3);
-        }
-        
-        .logo i {
-            margin-right: 12px;
-            font-size: 2.2rem;
-        }
-        
-        .search-container {
-            display: flex;
-            width: 50%;
-            position: relative;
-        }
-        
-        .search-input {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border: none;
-            border-radius: 50px;
-            background: rgba(45, 48, 71, 0.8);
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .search-input:focus {
-            background: rgba(60, 64, 95, 0.9);
-            box-shadow: 0 4px 20px rgba(233, 69, 96, 0.3);
-        }
-        
-        .search-button {
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            bottom: 5px;
-            padding: 0 1.5rem;
-            background: linear-gradient(45deg, #e94560, #ff7b9c);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(233, 69, 96, 0.4);
-        }
-        
-        .search-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(233, 69, 96, 0.5);
-        }
-        
-        /* Conteúdo principal */
-        main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        .hero {
-            text-align: center;
-            padding: 3rem 1rem;
-            margin-bottom: 3rem;
-            background: radial-gradient(circle at center, rgba(233, 69, 96, 0.1) 0%, transparent 70%);
-        }
-        
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #fff, #e94560);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin: 0 auto;
-            color: #a0a0b8;
-        }
-        
-        .section-title {
-            font-size: 2rem;
-            margin: 3rem 0 1.5rem;
-            color: #ffffff;
-            position: relative;
-            padding-left: 15px;
-        }
-        
-        .section-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 5px;
-            background: linear-gradient(to bottom, #e94560, #ff7b9c);
-            border-radius: 5px;
-        }
-        
-        /* Carrossel de filmes */
-        .movies-carousel {
-            display: flex;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            padding: 1.5rem 0.5rem;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .movies-carousel::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .movies-carousel::-webkit-scrollbar-track {
-            background: rgba(26, 26, 46, 0.5);
-            border-radius: 10px;
-        }
-        
-        .movies-carousel::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #e94560, #ff7b9c);
-            border-radius: 10px;
-        }
-        
-        /* Cards de filmes */
-        .movie-card {
-            min-width: 220px;
-            background: linear-gradient(145deg, #1a1a2e, #16213e);
-            border-radius: 16px;
+            padding: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            transition: all 0.4s ease;
-            cursor: pointer;
             position: relative;
+            background: #000;
         }
-        
-        .movie-card::before {
-            content: '';
-            position: absolute;
+
+        .video-background {
+            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(45deg, #e94560, #ff7b9c);
-            z-index: 2;
-        }
-        
-        .movie-card:hover {
-            transform: translateY(-15px) scale(1.03);
-            box-shadow: 0 15px 30px rgba(233, 69, 96, 0.3);
-        }
-        
-        .movie-poster {
-            width: 100%;
-            height: 330px;
+            width: 100vw;
+            height: 100vh;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            z-index: 1;
+            opacity: 0.3;
         }
-        
-        .movie-card:hover .movie-poster {
-            transform: scale(1.05);
-        }
-        
-        .movie-info {
-            padding: 1.2rem;
-            position: relative;
-        }
-        
-        .movie-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .movie-meta {
-            display: flex;
-            justify-content: space-between;
-            color: #a0a0b8;
-            font-size: 0.9rem;
-        }
-        
-        .rating {
-            color: #ffc107;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-        }
-        
-        .rating i {
-            margin-right: 5px;
-        }
-        
-        /* Grid de filmes */
-        .movies-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-        
-        /* Modal de detalhes do filme */
-        .modal {
-            display: none;
+
+        .video-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            overflow-y: auto;
-            animation: fadeIn 0.3s ease;
+            background: linear-gradient(-45deg, rgba(26, 26, 46, 0.6), rgba(22, 33, 62, 0.6), rgba(15, 52, 96, 0.6), rgba(26, 26, 46, 0.6));
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            z-index: 2;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        
-        .modal-content {
-            background: linear-gradient(145deg, #1a1a2e, #16213e);
-            margin: 2rem auto;
-            width: 90%;
-            max-width: 900px;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-            animation: slideUp 0.4s ease;
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .modal-header {
+
+        .container {
+            max-width: 480px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 50px 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            text-align: center;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.2s;
             position: relative;
-            height: 400px;
+            z-index: 10;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        .profile-pic {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            padding: 5px;
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.6),
+                        0 0 60px rgba(118, 75, 162, 0.4);
+            animation: glow 3s ease-in-out infinite;
+            position: relative;
             overflow: hidden;
         }
-        
-        .modal-backdrop {
+
+        .profile-pic::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 70%
+            );
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(102, 126, 234, 0.6),
+                            0 0 60px rgba(118, 75, 162, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(102, 126, 234, 0.8),
+                            0 0 80px rgba(118, 75, 162, 0.6);
+            }
+        }
+
+        .profile-pic img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            filter: brightness(0.7);
-        }
-        
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
             border-radius: 50%;
-            font-size: 1.5rem;
+            object-fit: cover;
+            display: block;
+        }
+
+        .status-indicator {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: #43b581;
+            border-radius: 50%;
+            border: 4px solid rgba(26, 26, 46, 0.9);
+            box-shadow: 0 0 10px rgba(67, 181, 129, 0.8);
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #a0a0c0;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .bio {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #d0d0e0;
+            margin-bottom: 35px;
+            padding: 0 10px;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 18px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .link-btn:hover::before {
+            left: 100%;
+        }
+
+        .link-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .link-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .link-icon {
+            font-size: 24px;
+            filter: drop-shadow(0 0 5px currentColor);
+        }
+
+        .discord { border-left: 3px solid #5865F2; }
+        .youtube { border-left: 3px solid #FF0000; }
+        .instagram { border-left: 3px solid #E4405F; }
+        .tiktok { border-left: 3px solid #000000; }
+
+        .music-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 24px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
         }
-        
-        .modal-close:hover {
-            background: rgba(233, 69, 96, 0.9);
-            transform: rotate(90deg);
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
         }
-        
-        .modal-body {
-            padding: 2.5rem;
-            position: relative;
+
+        .music-toggle.muted {
+            background: rgba(255, 255, 255, 0.1);
         }
-        
-        .modal-poster {
-            position: absolute;
-            top: -150px;
-            left: 2.5rem;
-            width: 200px;
-            border-radius: 12px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-            border: 5px solid #1a1a2e;
-        }
-        
-        .modal-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            margin-left: 230px;
-            color: #ffffff;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-        }
-        
-        .modal-meta {
+
+        .lang-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            margin-left: 230px;
+            gap: 10px;
+            z-index: 1000;
         }
-        
-        .modal-meta span {
-            background: linear-gradient(45deg, #e94560, #ff7b9c);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
+
+        .lang-btn {
+            padding: 10px 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 14px;
             font-weight: 600;
-            box-shadow: 0 4px 10px rgba(233, 69, 96, 0.3);
-        }
-        
-        .modal-overview {
-            line-height: 1.7;
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-            color: #d0d0e2;
-        }
-        
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            font-size: 1.2rem;
-            color: #a0a0b8;
-        }
-        
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid #e94560;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1.5rem;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Footer */
-        footer {
-            background: rgba(10, 10, 25, 0.9);
-            padding: 2rem;
-            text-align: center;
-            margin-top: 4rem;
-            border-top: 1px solid rgba(233, 69, 96, 0.3);
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .footer-logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #e94560, #ff7b9c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .footer-text {
-            color: #a0a0b8;
-            margin-bottom: 1.5rem;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-        }
-        
-        .social-links a {
-            color: #a0a0b8;
-            font-size: 1.5rem;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
-        
-        .social-links a:hover {
-            color: #e94560;
-            transform: translateY(-5px);
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
-        
-        /* Responsividade */
-        @media (max-width: 1100px) {
-            .modal-poster {
-                width: 150px;
-            }
-            
-            .modal-title {
-                margin-left: 180px;
-                font-size: 2rem;
-            }
-            
-            .modal-meta {
-                margin-left: 180px;
-            }
+
+        .lang-btn.active {
+            background: rgba(102, 126, 234, 0.8);
+            border-color: rgba(102, 126, 234, 0.8);
         }
-        
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-            
-            .search-container {
-                width: 100%;
-            }
-            
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .movies-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 1.5rem;
-            }
-            
-            .modal-poster {
-                position: static;
-                width: 200px;
-                display: block;
-                margin: 0 auto 1.5rem;
-            }
-            
-            .modal-title {
-                margin-left: 0;
-                text-align: center;
-            }
-            
-            .modal-meta {
-                margin-left: 0;
-                justify-content: center;
-            }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
         }
-        
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 2rem;
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(102, 126, 234, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
             }
-            
-            .section-title {
-                font-size: 1.6rem;
+            10% {
+                opacity: 1;
             }
-            
-            .modal-body {
-                padding: 1.5rem;
+            90% {
+                opacity: 1;
             }
-            
-            .modal-title {
-                font-size: 1.8rem;
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
             }
         }
 
-        /* Configuração da API */
-        .api-config {
-            background: rgba(26, 26, 46, 0.8);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-left: 4px solid #e94560;
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
         }
-        
-        .api-config h3 {
-            margin-bottom: 1rem;
-            color: #e94560;
-        }
-        
-        .api-input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: none;
-            border-radius: 8px;
-            background: rgba(45, 48, 71, 0.9);
-            color: white;
-            margin-bottom: 1rem;
-            font-family: monospace;
-        }
-        
-        .api-save {
-            background: linear-gradient(45deg, #e94560, #ff7b9c);
-            color: white;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .api-save:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .profile-pic {
+                width: 120px;
+                height: 120px;
+            }
+
+            .link-btn {
+                padding: 16px 25px;
+                font-size: 15px;
+            }
+
+            .lang-toggle {
+                top: 20px;
+                right: 20px;
+                gap: 8px;
+            }
+
+            .lang-btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+
+            .music-toggle {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <div class="logo">
-                <i class="fas fa-film"></i> CineApp
-            </div>
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Buscar filmes...">
-                <button class="search-button">Buscar</button>
-            </div>
-        </div>
-    </header>
-    
-    <main>
-        <section class="hero">
-            <h1>Descubra Filmes Incríveis</h1>
-            <p>Explore uma vasta coleção de filmes, desde os clássicos atemporais até os mais recentes lançamentos.</p>
-        </section>
+    <video class="video-background" autoplay loop muted playsinline>
+        <source src="https://files.catbox.moe/guobmz.mp4" type="video/mp4">
+    </video>
 
-        <!-- Configuração da API -->
-        <section class="api-config">
-            <h3>Configuração da API</h3>
-            <p>Para usar o aplicativo, você precisa de uma chave da API do TMDB. <a href="https://www.themoviedb.org/settings/api" target="_blank" style="color: #e94560;">Clique aqui para obter uma.</a></p>
-            <input type="text" class="api-input" id="api-key-input" placeholder="Cole sua chave da API do TMDB aqui">
-            <button class="api-save" id="api-save">Salvar Chave da API</button>
-            <p id="api-status" style="margin-top: 1rem; color: #a0a0b8;"></p>
-        </section>
-        
-        <section class="featured-movies">
-            <h2 class="section-title">Filmes em Destaque</h2>
-            <div class="movies-carousel" id="featured-carousel">
-                <!-- Os filmes em destaque serão carregados aqui -->
+    <div class="lang-toggle">
+        <button class="lang-btn active" id="btnPT">PT</button>
+        <button class="lang-btn" id="btnEN">EN</button>
+    </div>
+
+    <div class="video-overlay"></div>
+
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <div class="profile-wrapper">
+            <div class="profile-pic">
+                <img src="https://files.catbox.moe/35spou.png" alt="Profile">
             </div>
-        </section>
-        
-        <section class="popular-movies">
-            <h2 class="section-title">Filmes Populares</h2>
-            <div class="movies-grid" id="popular-grid">
-                <!-- Os filmes populares serão carregados aqui -->
-            </div>
-        </section>
-    </main>
-    
-    <!-- Modal de detalhes do filme -->
-    <div class="modal" id="movie-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <img class="modal-backdrop" id="modal-backdrop" src="" alt="">
-                <button class="modal-close" id="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <img class="modal-poster" id="modal-poster" src="" alt="">
-                <h2 class="modal-title" id="modal-title"></h2>
-                <div class="modal-meta" id="modal-meta">
-                    <!-- Metadados do filme serão inseridos aqui -->
-                </div>
-                <p class="modal-overview" id="modal-overview"></p>
-            </div>
+            <div class="status-indicator"></div>
+        </div>
+
+        <h1 id="name">Júlia ❤</h1>
+        <p class="subtitle" id="subtitle">Gamer | Developer | Creator</p>
+
+        <p class="bio" id="bio">
+            Bem-vindo ao meu espaço! Aqui compartilho conteúdo sobre games, programação e criatividade. Conecte-se comigo nas redes! 🚀
+        </p>
+
+        <div class="links">
+            <a href="#" class="link-btn discord">
+                <span class="link-icon">💬</span>
+                <span>Discord</span>
+            </a>
+            <a href="#" class="link-btn youtube">
+                <span class="link-icon">▶️</span>
+                <span>YouTube</span>
+            </a>
+            <a href="#" class="link-btn instagram">
+                <span class="link-icon">📷</span>
+                <span>Instagram</span>
+            </a>
+            <a href="#" class="link-btn tiktok">
+                <span class="link-icon">🎵</span>
+                <span>TikTok</span>
+            </a>
+        </div>
+
+        <div class="footer">
+            © 2024 - Feito com 💜
         </div>
     </div>
-    
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">CineApp</div>
-            <p class="footer-text">Descubra e explore o mundo do cinema</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
-        </div>
-    </footer>
-    
-    <script>
-        // Configurações da API
-        const API_BASE_URL = 'https://api.themoviedb.org/3';
-        const IMG_BASE_URL = 'https://image.tmdb.org/t/p/w500';
-        const BACKDROP_BASE_URL = 'https://image.tmdb.org/t/p/w1280';
-        
-        // Elementos DOM
-        const featuredCarousel = document.getElementById('featured-carousel');
-        const popularGrid = document.getElementById('popular-grid');
-        const searchInput = document.querySelector('.search-input');
-        const searchButton = document.querySelector('.search-button');
-        const movieModal = document.getElementById('movie-modal');
-        const modalClose = document.getElementById('modal-close');
-        const apiKeyInput = document.getElementById('api-key-input');
-        const apiSaveButton = document.getElementById('api-save');
-        const apiStatus = document.getElementById('api-status');
 
-        // Carregar chave da API salva
-        let API_KEY = localStorage.getItem('tmdb_api_key');
-        if (API_KEY) {
-            apiKeyInput.value = API_KEY;
-            apiStatus.textContent = 'Chave da API carregada com sucesso!';
-            apiStatus.style.color = '#4CAF50';
-            initApp();
+    <button class="music-toggle" id="musicToggle">🔊</button>
+
+    <audio id="bgMusic" loop>
+        <source src="https://tmpfiles.org/dl/15749220/ssstik.io_1765911468038.mp3.mp4" type="audio/mp4">
+    </audio>
+
+    <script>
+        // Traduções
+        const translations = {
+            pt: {
+                subtitle: "Gamer | Developer | Creator",
+                bio: "Bem-vindo ao meu espaço! Aqui compartilho conteúdo sobre games, programação e criatividade. Conecte-se comigo nas redes! 🚀"
+            },
+            en: {
+                subtitle: "Gamer | Developer | Creator",
+                bio: "Welcome to my space! Here I share content about games, programming and creativity. Connect with me on social media! 🚀"
+            }
+        };
+
+        const btnPT = document.getElementById('btnPT');
+        const btnEN = document.getElementById('btnEN');
+        const subtitle = document.getElementById('subtitle');
+        const bio = document.getElementById('bio');
+
+        btnPT.addEventListener('click', () => {
+            subtitle.textContent = translations.pt.subtitle;
+            bio.textContent = translations.pt.bio;
+            btnPT.classList.add('active');
+            btnEN.classList.remove('active');
+        });
+
+        btnEN.addEventListener('click', () => {
+            subtitle.textContent = translations.en.subtitle;
+            bio.textContent = translations.en.bio;
+            btnEN.classList.add('active');
+            btnPT.classList.remove('active');
+        });
+
+        // Criar partículas
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
         }
 
-        // Salvar chave da API
-        apiSaveButton.addEventListener('click', () => {
-            const key = apiKeyInput.value.trim();
-            if (key) {
-                API_KEY = key;
-                localStorage.setItem('tmdb_api_key', key);
-                apiStatus.textContent = 'Chave da API salva com sucesso!';
-                apiStatus.style.color = '#4CAF50';
-                initApp();
+        // Controle de música
+        const audio = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        let musicStarted = false;
+        let isMuted = false;
+
+        audio.volume = 0.7;
+
+        // Iniciar música no primeiro clique
+        document.body.addEventListener('click', function initMusic() {
+            if (!musicStarted) {
+                audio.play().catch(e => console.log('Autoplay prevented:', e));
+                musicStarted = true;
+            }
+        }, { once: true });
+
+        // Toggle música
+        musicToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            if (!musicStarted) {
+                audio.play().catch(e => console.log('Play prevented:', e));
+                musicStarted = true;
+                isMuted = false;
+                musicToggle.textContent = '🔊';
+                musicToggle.classList.remove('muted');
             } else {
-                apiStatus.textContent = 'Por favor, insira uma chave da API válida.';
-                apiStatus.style.color = '#e94560';
+                isMuted = !isMuted;
+                audio.muted = isMuted;
+                musicToggle.textContent = isMuted ? '🔇' : '🔊';
+                musicToggle.classList.toggle('muted', isMuted);
             }
         });
 
-        // Função para buscar 
+        // Animação suave nos links
+        const links = document.querySelectorAll('.link-btn');
+        links.forEach((link, index) => {
+            link.style.animation = `fadeInUp 0.8s ease forwards ${0.4 + index * 0.1}s`;
+            link.style.opacity = '0';
+        });
+    </script>
+</body>
+    </html>
